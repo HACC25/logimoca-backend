@@ -104,8 +104,8 @@ The full-featured v2 will include more robust knowledge structures for refined i
 - **US-2:** As a student, I see my interest profile visualized as a radar chart with color-coded RIASEC domains, with a table underneath with each RIASEC domain with typical jobs associated with each interest domain ie. Realistic, Investigative, Artistic, Social, Enterprising, and Conventional
 - **US-3:** As a high school student, I see 10 high school-appropriate task statements, and choose the tasks I have done before, so the system can quickly gauge my experience (4/5) and aptitude (2/3) across relevant skills.
 - **US-4:** As a student, the system asks me open-ended questions about my experience to confirm and refine my initial skill ratings, ensuring the final score is accurate.
-- **US-5.1:** MVP (Partial Feature): As a student, I see the results of my personalized results as 5-10 occupations ranked by match quality with my skills and interests, with clear explanations for each match, along with title, median salary, growth outlook, top 3 required skills, and training duration, and can click in to explore and filter program options related to that occupation
-- **US-5.2:** Full-feature: As a student, I see my personalized results as 5-10 occupations plotted on the RIASEC radar chart and can hover over the plotted titles to see 3 top required skills. I can click into the plotted occupation to see the occupation card as described in the MVP feature (4.1)
+- **US-5.1:** MVP (Partial Feature): As a student, I see the results of my personalized results as 5-10 occupations ranked by match quality with my skills and interests, with clear explanations for each match, along with title, median salary, growth outlook, top 3 required skills, and training duration (if available), and can click in to explore and filter program options related to that occupation
+- **US-5.2:** Full-feature: As a student, I see my personalized results as 5-10 occupations plotted on the RIASEC radar chart and can hover over the plotted titles to see 3 top required skills. I can click into the plotted occupation to see the occupation card as described in the MVP feature (5.1)
 - **US-6:** As a student, I can choose 'explore on my own' to see and explore an interactive visualization showing a network graph → career clusters → specific occupations (expands to 15-25 of my personalized top ranked occupation nodes)
 - **US-7:** As a student, when I hover over an occupation node, I see: title, median salary, growth outlook, top 3 required skills, and training duration, and can click in to explore program options related to that occupation
 
@@ -180,7 +180,7 @@ The full-featured v2 will include more robust knowledge structures for refined i
 
 **Backend:**
 - API Framework: FastAPI (Python 3.11+)
-- ORM: SQLAlchemy
+- ORM: SQLAlchemy + postgres for static storage
 - Vector Store: FAISS (local) or Pinecone (cloud)
 - Knowledge Graph: Neo4j Community Edition or NetworkX (in-memory for MVP)
 - LLM Integration: OpenAI API (GPT-4) or Anthropic Claude API
@@ -192,7 +192,7 @@ The full-featured v2 will include more robust knowledge structures for refined i
 
 **Infrastructure (MVP):**
 - Deployment: Netlify (frontend) + Render (backend)
-- Database: Postgres on Supabase
+- Database: Postgres
 - Secrets: Environment variables, no hardcoded keys
 
 ---

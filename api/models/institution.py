@@ -1,12 +1,15 @@
 """Institution model representing educational institutions and locations."""
 
-from typing import List, Optional
+from typing import List, Optional, TYPE_CHECKING
 from sqlalchemy import String, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base
+from .base import Base, TimestampMixin
 
-class Institution(Base):
+if TYPE_CHECKING:
+    from .program import Program
+
+class Institution(TimestampMixin, Base):
     """Educational institution in Hawai'i."""
     
     __tablename__ = "institutions"

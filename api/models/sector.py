@@ -1,12 +1,15 @@
 """Sector model representing career pathway industry domains."""
 
-from typing import List
+from typing import List, TYPE_CHECKING
 from sqlalchemy import String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base
+from .base import Base, TimestampMixin
 
-class Sector(Base):
+if TYPE_CHECKING:
+    from .program import Program
+
+class Sector(TimestampMixin, Base):
     """Career pathway sector (industry domain)."""
     
     __tablename__ = "sectors"

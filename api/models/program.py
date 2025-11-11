@@ -7,14 +7,14 @@ from sqlalchemy import String, Float, Integer, Text, JSON, ForeignKey, Index, ev
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 from sqlalchemy.ext.declarative import declared_attr
 
-from .base import Base
+from .base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from .sector import Sector
     from .institution import Institution
-    from .occupation import Occupation  # Will be created next
+    from .occupation import Occupation
 
-class Program(Base):
+class Program(TimestampMixin, Base):
     """Training program at any institution."""
     __tablename__ = "programs"
     
@@ -32,11 +32,9 @@ class Program(Base):
             raise ValueError(f"{key} is required")
             
         if key == "sector_id":
-            from .sector import Sector
             if not isinstance(value, str):
                 raise ValueError("Sector ID must be a string")
         elif key == "institution_id":
-            from .institution import Institution
             if not isinstance(value, str):
                 raise ValueError("Institution ID must be a string")
         return value
@@ -62,7 +60,7 @@ class Program(Base):
     sector: Mapped["Sector"] = relationship(back_populates="programs")
     institution: Mapped["Institution"] = relationship(back_populates="programs")
     occupations: Mapped[List["Occupation"]] = relationship(
-        secondary="program_occupation",
+        secondary="program_occupation_association",
         back_populates="programs"
     )
     

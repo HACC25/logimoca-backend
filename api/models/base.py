@@ -29,20 +29,21 @@ class TimestampMixin:
         """Timestamp for when the record was last updated."""
         return mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
-class Base(DeclarativeBase, TimestampMixin):
-    """Base class for all SQLAlchemy models."""
-    
+class Base(DeclarativeBase):
+    """Single declarative base for all models (app + onet)."""
     metadata = MetaData(naming_convention=convention)
     session: Session = None
-    
-    # Make model printable for debugging
     def __repr__(self) -> str:
-        """Return a string representation of the model."""
         attrs = []
         for key, value in self.__dict__.items():
             if not key.startswith("_"):
                 attrs.append(f"{key}={value!r}")
         return f"{self.__class__.__name__}({', '.join(attrs)})"
+
+
+class OnetBase(Base):
+    """Alias/abstract base for O*NET models; shares registry with Base."""
+    __abstract__ = True
 
 @event.listens_for(Session, 'after_attach')
 def receive_after_attach(session: Session, instance: Any) -> None:

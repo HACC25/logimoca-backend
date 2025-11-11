@@ -1,13 +1,16 @@
 """InterestCode model representing RIASEC codes and metadata."""
 
 import re
-from typing import Dict
+from typing import Dict, TYPE_CHECKING
 from sqlalchemy import String, Text
 from sqlalchemy.orm import Mapped, mapped_column, validates
 
-from .base import Base
+from .base import Base, TimestampMixin
 
-class InterestCode(Base):
+if TYPE_CHECKING:
+    pass
+
+class InterestCode(TimestampMixin, Base):
     """RIASEC interest code with associated metadata."""
     __tablename__ = "interest_codes"
     
@@ -34,6 +37,8 @@ class InterestCode(Base):
         nullable=False,
         comment="Hex color code for UI theming (e.g., '#3B82F6')"
     )
+
+    # evaluate these fields (AI slop?)
     job_tasks: Mapped[str] = mapped_column(
         Text, 
         nullable=False,
