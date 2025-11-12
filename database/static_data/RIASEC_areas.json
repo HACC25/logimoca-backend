@@ -1,0 +1,31 @@
+{
+   "start" : 1,
+   "end" : 6,
+   "total" : 6,
+   "result" : [
+      {
+         "area" : "Realistic",
+         "description" : "People with Realistic interests like work that includes practical, hands-on problems and answers. Often people with Realistic interests do not like careers that involve paperwork or working closely with others. They like working with plants and animals; real-world materials like wood, tools, and machinery; and outside work."
+      },
+      {
+         "area" : "Investigative",
+         "description" : "People with Investigative interests like work that has to do with ideas and thinking rather than physical activity or leading people. They like searching for facts and figuring out problems."
+      },
+      {
+         "area" : "Artistic",
+         "description" : "People with Artistic interests like work that deals with the artistic side of things, such as acting, music, art, and design. They like creativity in their work and work that can be done without following a set of rules."
+      },
+      {
+         "area" : "Social",
+         "description" : "People with Social interests like working with others to help them learn and grow. They like working with people more than working with objects, machines, or information. They like teaching, giving advice, and helping and being of service to people."
+      },
+      {
+         "area" : "Enterprising",
+         "description" : "People with Enterprising interests like work that has to do with starting up and carrying out business projects. These people like taking action rather than thinking about things. They like persuading and leading people, making decisions, and taking risks for profits."
+      },
+      {
+         "area" : "Conventional",
+         "description" : "People with Conventional interests like work that follows set procedures and routines. They prefer working with information and paying attention to details rather than working with ideas. They like working with clear rules and following a strong leader."
+      }
+   ]
+}

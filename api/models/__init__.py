@@ -25,7 +25,8 @@ from .associations import (
 )
 
 # Client (Pydantic) models
-from .client_models import InterestAssessment, SkillsAssessment
+from .interest_assessment import InterestAssessment
+from .skills_assessment import SkillsAssessment
 
 __all__ = [
     # Base
