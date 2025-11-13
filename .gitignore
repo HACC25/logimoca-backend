@@ -22,7 +22,9 @@ project_docs/
 # Data & embeddings
 data/embeddings/
 data/processed/
+data/processor/
 data/raw/
+data/seed_data/
 
 # Streamlit / Secrets
 .streamlit/
