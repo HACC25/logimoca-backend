@@ -10,7 +10,6 @@ from .base import OnetBase
 
 if TYPE_CHECKING:
     from .occupation import Occupation
-    from .program import Program
     from .skill import Skill
     from .interest import Interest
 

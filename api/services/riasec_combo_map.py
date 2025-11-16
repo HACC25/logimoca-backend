@@ -120,3 +120,5 @@ GET_CODE = {'ACE': 'ACE',
  'SRC': 'CRS',
  'SRE': 'ERS',
  'SRI': 'IRS'}
+
+print(GET_CODE.keys())

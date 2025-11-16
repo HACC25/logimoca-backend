@@ -27,6 +27,9 @@ data/processor/
 data/raw/
 data/seed_data/
 
+# migrations
+alembic/versions/
+
 # Streamlit / Secrets
 .streamlit/
 secrets.toml

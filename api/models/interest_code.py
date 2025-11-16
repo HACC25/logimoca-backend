@@ -1,7 +1,7 @@
 """InterestCode model representing RIASEC codes and metadata."""
 
 import re
-from typing import Dict, TYPE_CHECKING
+from typing import Dict, TYPE_CHECKING, Set
 from sqlalchemy import String, Text
 from sqlalchemy.orm import Mapped, mapped_column, validates
 
@@ -16,9 +16,9 @@ class InterestCode(TimestampMixin, Base):
     
     # Primary Key
     code: Mapped[str] = mapped_column(
-        String(1), 
+        String(1),
         primary_key=True,
-        comment="'R' | 'I' | 'A' | 'S' | 'E' | 'C'"
+        comment="'R' | 'I' | 'A' | 'S' | 'E' | 'C' "
     )
     
     # Attributes

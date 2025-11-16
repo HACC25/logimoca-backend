@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base, TimestampMixin
 
 if TYPE_CHECKING:
-    from .program import Program
+    from .pathway import Pathway
 
 class Sector(TimestampMixin, Base):
     """Career pathway sector (industry domain)."""
@@ -23,8 +23,9 @@ class Sector(TimestampMixin, Base):
     icon_url: Mapped[str | None] = mapped_column(String(500))  # Optional field
     pathway_url: Mapped[str] = mapped_column(String(500), nullable=False)
     
-    # Relationships
-    programs: Mapped[List["Program"]] = relationship(
+
+    # One-to-Many: A Sector has many Pathways
+    pathways: Mapped[List["Pathway"]] = relationship(
         back_populates="sector",
         cascade="all, delete-orphan"
     )
