@@ -1,0 +1,39 @@
+GET_CODE = {
+	'ACE': 'ACE', 'ACI': 'ACI', 'ACR': 'ACR', 'ACS': 'ACS',
+	'AEC': 'ACE', 'AEI': 'AEI', 'AER': 'AER', 'AES': 'AES',
+	'AIC': 'ACI', 'AIE': 'AEI', 'AIR': 'AIR', 'AIS': 'AIS',
+	'ARC': 'ACR', 'ARE': 'AER', 'ARI': 'AIR', 'ARS': 'ARS',
+	'ASC': 'ACS', 'ASE': 'AES', 'ASI': 'AIS', 'ASR': 'ARS',
+	'CAE': 'ACE', 'CAI': 'ACI', 'CAR': 'ACR', 'CAS': 'ACS',
+	'CEA': 'ACE', 'CEI': 'CEI', 'CER': 'CER', 'CES': 'CES',
+	'CIA': 'ACI', 'CIE': 'CEI', 'CIR': 'CIR', 'CIS': 'CIS',
+	'CRA': 'ACR', 'CRE': 'CER', 'CRI': 'CIR', 'CRS': 'CRS',
+	'CSA': 'ACS', 'CSE': 'CES', 'CSI': 'CIS', 'CSR': 'CRS',
+	'EAC': 'ACE', 'EAI': 'AEI', 'EAR': 'AER', 'EAS': 'AES',
+	'ECA': 'ACE', 'ECI': 'CEI', 'ECR': 'CER', 'ECS': 'CES',
+	'EIA': 'AEI', 'EIC': 'CEI', 'EIR': 'EIR', 'EIS': 'EIS',
+	'ERA': 'AER', 'ERC': 'CER', 'ERI': 'EIR', 'ERS': 'ERS',
+	'ESA': 'AES', 'ESC': 'CES', 'ESI': 'EIS', 'ESR': 'ERS',
+	'IAC': 'ACI', 'IAE': 'AEI', 'IAR': 'AIR', 'IAS': 'AIS',
+	'ICA': 'ACI', 'ICE': 'CEI', 'ICR': 'CIR', 'ICS': 'CIS',
+	'IEA': 'AEI', 'IEC': 'CEI', 'IER': 'EIR', 'IES': 'EIS',
+	'IRA': 'AIR', 'IRC': 'CIR', 'IRE': 'EIR', 'IRS': 'IRS',
+	'ISA': 'AIS', 'ISC': 'CIS', 'ISE': 'EIS', 'ISR': 'IRS',
+	'RAC': 'ACR', 'RAE': 'AER', 'RAI': 'AIR', 'RAS': 'ARS',
+	'RCA': 'ACR', 'RCE': 'CER', 'RCI': 'CIR', 'RCS': 'CRS',
+	'REA': 'AER', 'REC': 'CER', 'REI': 'EIR', 'RES': 'ERS',
+	'RIA': 'AIR', 'RIC': 'CIR', 'RIE': 'EIR', 'RIS': 'IRS',
+	'RSA': 'ARS', 'RSC': 'CRS', 'RSE': 'ERS', 'RSI': 'IRS',
+	'SAC': 'ACS', 'SAE': 'AES', 'SAI': 'AIS', 'SAR': 'ARS',
+	'SCA': 'ACS', 'SCE': 'CES', 'SCI': 'CIS', 'SCR': 'CRS',
+	'SEA': 'AES', 'SEC': 'CES', 'SEI': 'EIS', 'SER': 'ERS',
+	'SIA': 'AIS', 'SIC': 'CIS', 'SIE': 'EIS', 'SIR': 'IRS',
+	'SRA': 'ARS', 'SRC': 'CRS', 'SRE': 'ERS', 'SRI': 'IRS'
+}
+
+def canonical_riasec(code: str) -> str:
+	"""Return canonical 3-letter RIASEC code via permutation map.
+
+	Falls back to original uppercase code if not present.
+	"""
+	return GET_CODE.get(code.upper(), code.upper())

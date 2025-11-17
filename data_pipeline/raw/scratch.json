@@ -1,0 +1,35 @@
+[
+  {
+    "sector_name": "Agriculture, Food, and Natural Resources",
+    "pathway_url": "https://hawaiicareerpathways.org/pathways/programs/AFNRM/afnrm.html",
+    "pathways": [
+      {
+        "id": "AFNRM-animalsystems",
+        "sector_id": "AFNRM",
+        "name": "Animal Systems (ANS)",
+        "description": "Animal Systems (ANS) | Hawai\u00e2\u0080\u0098i Career Pathways... (truncated long text)",
+        "pathway_url": "https://hawaiicareerpathways.org/pathways/programs/AFNRM/animalsystems.html",
+        "programs": [
+          {
+            "id": "AFNRM-SUB-wcc_vettech",
+            "sector_id": "AFNRM",
+            "name": "Windward Community College Veterinary Technology Program",
+            "description": "Windward Community College Veterinary Technology Program | Hawai\u00e2\u0080\u0098i Career Pathways Home AFNRM ASNS Programs Program Description: Get an academic foundation",
+            "program_url": "https://hawaiicareerpathways.org/pathways/programs/AFNRM/wcc_vettech.html",
+            "source": "Subcontent",
+            "program_links": [
+              "https://windward.hawaii.edu/programs-of-study/veterinary-studies/",
+              "https://windward.hawaii.edu/programs-of-study/veterinary-studies/veterinary-studies-on-campus-curriculum/",
+              "https://windward.hawaii.edu/programs-of-study/veterinary-studies/veterinary-studies-hybrid-curriculum/",
+              "https://cms.ctahr.hawaii.edu/hnfas/Academics/PreVeterinary/PreVet-CourseWork",
+              "http://www.uhh.hawaii.edu/academics/cafnrm/specializations/ansci_prevet.php",
+              "https://kamaaina.hawaii.edu",
+              "https://windward.hawaii.edu/programs-of-study/veterinary-studies/veterinary-studies-information-sessions/",
+              "https://collegeiswithinreachhawaii.com/financial-aid-resources/"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

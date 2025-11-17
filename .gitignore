@@ -43,3 +43,6 @@ secrets.toml
 dist/
 build/
 *.egg-info/
+
+# src/core/config.py
+src/core/config.py

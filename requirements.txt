@@ -77,7 +77,6 @@ typer==0.20.0
 typing-inspection==0.4.2
 typing_extensions==4.15.0
 tzdata==2025.2
--e git+https://github.com/HACC25/logimoca-backend.git@05b4792ac537d2103c321221792411411e958def#egg=uhpathfinder_backend
 urllib3==2.5.0
 uvicorn==0.38.0
 uvloop==0.22.1

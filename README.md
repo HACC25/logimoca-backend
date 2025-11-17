@@ -1,0 +1,106 @@
+# Project Structure
+```
+my_fastapi_project/
+├── alembic/                 <-- generated
+│   ├── versions/            <-- migrations
+│   ├── env.py               <-- ** modified exclude (ONET, RIASEC) **
+│   └── ...
+├── src/
+│   ├── __init__.py
+│   ├── main.py                <-- FastAPI
+│   │
+│   ├── api/                   
+│   │   ├── __init__.py
+│   │   ├── routes.py       <-- endpoint routing 
+│   │   ├── deps.py         <-- Global Dependencies (get_db/current_user)             
+│   │   └── v1/
+│   │       ├── __init__.py
+│   │       ├── controllers/           <-- ** controllers **
+│   │       │   ├── __init__.py
+│   │       │   ├── assessment.py    <-- quiz submissions
+│   │       │   ├── occupations.py   <-- O*NET occupation client data
+│   │       │   ├── programs.py      <-- Program/Pathway search & RAG
+│   │       │   └── sectors.py       <-- Sector/Pathway browsing
+│   │       │
+│   │       └── schemas/           <-- **Pydantic Models **
+│   │           ├── __init__.py         (validation type checking etc)
+│   │           ├── assessment.py    <-- RIASEC/Skill req/resp
+│   │           ├── occupation.py    <-- Occ client data
+│   │           ├── program.py       <-- Program/Pathway client data
+│   │           └── token.py         <-- login/auth (optional for MVP)
+│   │
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── config.py            <-- App settings (db url, secret keys)
+│   │   ├── security.py          <-- PW hashing, tokens (optional MVP)
+│   │   └── llm.py               <-- **RUNTIME LLM/RAG Logic** 
+│   │                                  (LangChain chains, clients)
+│   ├── db/
+│   │   ├── __init__.py
+│   │   ├── base_class.py        <-- 'models/base.py' file
+│   │   ├── session.py           <-- Database session (get_db function)
+│   │   └── vector_store.py      <-- Logic to query pgvector/chroma
+│   │
+│   ├── models/                <-- **SQLAlchemy Models (DB Tables)**
+│   │   ├── __init__.py
+│   │   ├── public_schema/       <-- **App Data**
+│   │   │   ├── __init__.py
+│   │   │   ├── occupation.py    <-- 'Occupation' (app data) model
+│   │   │   ├── hs_skill.py      <-- 'HSSkill' model
+│   │   │   ├── skills_assessment.py <-- Assessment data flow
+│   │   │   ├── sector.py
+│   │   │   ├── pathway.py
+│   │   │   ├── program.py
+│   │   │   └── scraped_data.py
+│   │   ├── onet_schema/         <-- **Static O*NET Data**
+│   │   │   ├── __init__.py
+│   │   │   ├── onet_occupation.py
+│   │   │   ├── content_model.py
+│   │   │   ├── skill.py         <-- The 'skills' score table
+│   │   │   ├── interest.py      <-- The 'interests' score table
+│   │   │   └── scale.py
+│   │   └── riasec_schema/       <-- **Static Calculated Data**
+│   │       ├── __init__.py
+│   │       ├── riasec_profile.py
+│   │       ├── interest_matched_job.py
+│   │       └── interest_filtered_skill.py
+│   │
+│   ├── repositories/            <-- **Data Access Layer (DB queries)**
+│   │   ├── __init__.py
+│   │   ├── assessment_repo.py   <-- Queries the 'riasec_schema'
+│   │   ├── occupation_repo.py   <-- Queries onet and app occupations
+│   │   └── program_repo.py      <-- Queries app programs & vector store
+│   │
+│   └── services/                <-- **Business Logic Layer**
+│       ├── __init__.py
+│       ├── assessment_service.py  <-- Compute scores, calls repo, LLM for skills
+│       ├── occupation_service.py  <-- Combines O*NET/app data in 1 obj
+│       ├── program_service.py     <-- Orchestrates RAG queries
+│       └── static_references/     <-- psychometric quiz questions etc.
+│
+├── data_pipeline/               <-- **OFFLINE Scripts (manual or scheduled)**
+│   ├── __init__.py
+│   ├── 1_ingest_hawaii_data.py  <-- Populates public.sector/pathway/program
+│   ├── 2_embed_programs.py      <-- Populates vector store
+│   ├── 3_link_occupations.py    <-- Populates program_occupation table
+│   └── onet_helpers/            <-- Scripts to bulk-load the 'onet'
+│
+├── tests/
+│   └── ... (Your tests)
+├── .env
+├── alembic.ini                  <-- Alembic config
+└── requirements.txt
+```
+
+# Backend Overview
+
+# API Endpoint Overview
+
+| Frontend Component(s) | Endpoint | Method | Description & Purpose |
+|------------------------|----------|--------|------------------------|
+| RIASECQuiz.tsx | `/api/v1/assessment/riasec` | POST | **(Prototype Step 1)**. User submits 30 quiz answers. Backend calculates their 3-letter code (e.g., "IRE") and returns pre-calculated jobs and skills from `riasec.interest_matched_jobs` and `riasec.interest_filtered_skills` tables. |
+| SkillsAssessment.tsx, SkillsNarrative.tsx | `/api/v1/assessment/skills` | POST | **(Prototype Step 2)**. User submits their skill panel scores (`panel_initial_scores`) and narrative text. Backend: (1) Calls the LLM to refine this into the 40-rating string, (2) Calls the CareerOneStop API, and (3) Returns the final ranked list of occupation matches. |
+| OccupationResults.tsx, OccupationDetails.tsx | `/api/v1/occupations/{onet_code}` | GET | **(Prototype Step 3)**. User clicks a job. This endpoint fetches data from both `onet.onet_occupation` (title, description) and `public.occupation` (app data, wage, etc.) and returns one combined JSON response. |
+| (Future Search Feature) | `/api/v1/programs/search` | GET | User submits a free-text query (e.g., "computer programs on Maui"). Triggers the RAG pipeline (`program_service` → `vector_store`) and returns matching `Program` objects. |
+| (Future Browse Feature) | `/api/v1/sectors` | GET | Returns the list of all **9 Sectors**. |
+| (Future Browse Feature) | `/api/v1/sectors/{sector_id}/pathways` | GET | Returns all Pathways for a given Sector. |

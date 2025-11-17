@@ -1,0 +1,16 @@
+from fastapi import APIRouter
+
+# v1 routers
+from api.v1.controllers.assessment import router as assessment_router
+from api.v1.controllers.occupations import router as occupations_router
+from api.v1.controllers.programs import router as programs_router
+from api.v1.controllers.sectors import router as sectors_router
+
+# Aggregated router for the API
+api_router = APIRouter()
+
+# Mount versioned routers; prefixes are defined within each router
+api_router.include_router(assessment_router)
+api_router.include_router(occupations_router)
+api_router.include_router(programs_router)
+api_router.include_router(sectors_router)
