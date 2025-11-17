@@ -362,7 +362,7 @@ def stage3_populate_association_table(
         for prog_id, score in programs:
             associations.append({
                 "program_id": prog_id,
-                "occupation_code": occ_code,
+                "occupation_onet_code": occ_code,  # Must match the column name in the table
                 # Store score in metadata if the table supports it
                 # For now we'll just create the association
             })

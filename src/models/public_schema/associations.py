@@ -20,7 +20,7 @@ program_occupation_association = Table(
     Base.metadata,
     Column(
         "program_id",
-        String(50),
+        String(100),  # Increased from 50 to 100 to handle longer program IDs
         ForeignKey("programs.id", ondelete="CASCADE"), # Stays in public
         primary_key=True
     ),

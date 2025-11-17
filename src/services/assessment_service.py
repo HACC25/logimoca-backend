@@ -63,13 +63,22 @@ class AssessmentService:
         """
         repo = RiasecRepository(db)
         canonical_code = canonical_riasec(payload.riasec_code)
+        # Determine how many jobs to return (default 10, clamp 1..50)
+        try:
+            limit = int(getattr(payload, "limit", 10) or 10)
+        except Exception:
+            limit = 10
+        if limit < 1:
+            limit = 1
+        elif limit > 50:
+            limit = 50
         profile = repo.get_profile(canonical_code)
         if profile:
-            top_jobs_data = repo.top_matched_jobs(profile, limit=15)
+            top_jobs_data = repo.top_matched_jobs(profile, limit=limit)
             occupation_pool = [j["occ_code"] for j in top_jobs_data]
             top10_jobs = [
-                {"onet_code": j["occ_code"], "title": j["title"]} 
-                for j in top_jobs_data[:10]
+                {"onet_code": j["occ_code"], "title": j["title"]}
+                for j in top_jobs_data[:limit]
             ]
         else:
             occupation_pool = []

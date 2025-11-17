@@ -5,6 +5,8 @@ from typing import List, Optional, Dict
 # ---------------- RIASEC Interest -----------------
 class RiasecCodeRequest(BaseModel):
     riasec_code: str = Field(min_length=3, max_length=3, pattern="^[RIASEC]{3}$")
+    # Optional limit for number of top jobs to return (defaults to 10)
+    limit: Optional[int] = Field(default=10, ge=1, le=50)
 
 
 class OccupationLite(BaseModel):
