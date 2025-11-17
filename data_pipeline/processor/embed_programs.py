@@ -20,6 +20,10 @@ sys.path.insert(0, str(project_root))
 
 from src.db.session import session_scope
 from src.models import Program, VectorChunk
+from sqlalchemy.orm import configure_mappers
+
+# Ensure all mappers are configured before use
+configure_mappers()
 
 
 def chunk_program_text(program: Program) -> List[Dict]:
@@ -89,7 +93,7 @@ def embed_texts_voyage(texts: List[str], api_key: str) -> List[List[float]]:
     return [item["embedding"] for item in data["data"]]
 
 
-def embed_texts_local(texts: List[str], model_name: str = "all-MiniLM-L6-v2") -> List[List[float]]:
+def embed_texts_local(texts: List[str], model_name: str = "all-MiniLM-L6-v2", pad_to: int | None = 1024) -> List[List[float]]:
     """
     Generate embeddings using local sentence-transformers model.
     No API key needed, runs on your machine.
@@ -103,7 +107,7 @@ def embed_texts_local(texts: List[str], model_name: str = "all-MiniLM-L6-v2") ->
             - "all-mpnet-base-v2": Better quality, 768 dims
     
     Returns:
-        List of embedding vectors
+        List of embedding vectors (optionally zero-padded to pad_to length)
     """
     try:
         from sentence_transformers import SentenceTransformer
@@ -115,7 +119,18 @@ def embed_texts_local(texts: List[str], model_name: str = "all-MiniLM-L6-v2") ->
     
     model = SentenceTransformer(model_name)
     embeddings = model.encode(texts, show_progress_bar=False)
-    return embeddings.tolist()
+    vectors = embeddings.tolist()
+    # Optionally pad vectors to match pgvector column dimension
+    if pad_to is not None:
+        padded = []
+        for v in vectors:
+            if len(v) < pad_to:
+                v = v + [0.0] * (pad_to - len(v))
+            elif len(v) > pad_to:
+                v = v[:pad_to]
+            padded.append(v)
+        return padded
+    return vectors
 
 
 def get_embedding_function(use_local: bool = False):

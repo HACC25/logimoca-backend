@@ -19,5 +19,5 @@ class ScrapedProgramSource(Base):
     raw_text: Mapped[str] = mapped_column(Text, nullable=False)
     scraped_url: Mapped[str] = mapped_column(String(500), nullable=False)
     
-    # Link back to the Program object
-    program: Mapped["Program"] = relationship(back_populates="source_text")
+    # Link back to the Program object (one-way relationship, no back_populates)
+    program: Mapped["Program"] = relationship()

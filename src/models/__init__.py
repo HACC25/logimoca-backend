@@ -22,6 +22,7 @@ from .public_schema.institution import Institution
 from .public_schema.pathway import Pathway
 from .public_schema.program import Program
 from .public_schema.occupation import Occupation
+from .public_schema.vector_chunk import VectorChunk
 from .public_schema.associations import program_occupation_association
 
 # O*NET schema models (for cross-schema relationships and skills/interests data)
@@ -52,6 +53,7 @@ __all__ = [
     "Pathway",
     "Program",
     "Occupation",
+    "VectorChunk",
     "program_occupation_association",
     # O*NET models
     "OnetOccupation",
