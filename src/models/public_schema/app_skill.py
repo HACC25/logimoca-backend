@@ -4,7 +4,7 @@ from typing import List, Dict, TYPE_CHECKING
 from sqlalchemy import String, Float, Integer, Text, JSON, ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base, TimestampMixin
+from ..base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from .content_model_reference import ContentModelReference

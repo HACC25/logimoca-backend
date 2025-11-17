@@ -2,7 +2,7 @@ from typing import Dict, List, Iterable
 import json
 from pathlib import Path
 
-from api.v1.schemas.assessment import (
+from src.api.v1.schemas.assessment import (
     RiasecCodeRequest,
     RiasecResult,
     SkillDefinition,
@@ -13,8 +13,8 @@ from api.v1.schemas.assessment import (
     InterestQuizResponse,
     SkillTriageResponse,
 )
-from repositories.assessment_repo import AssessmentRepository
-from repositories.riasec_repo import RiasecRepository
+from src.repositories.assessment_repo import AssessmentRepository
+from src.repositories.riasec_repo import RiasecRepository
 from .static_references.riasec_combo_map import canonical_riasec
 from sqlalchemy.orm import Session
 
@@ -59,16 +59,17 @@ class AssessmentService:
         """Return interest-filtered occupations + baseline skill panel.
 
         Uses permutation map to canonicalize code (avoids arbitrary alphabetical sorting) and
-        queries riasec schema for matched jobs. If canonical profile not found, returns empty set.
+        queries riasec schema for matched jobs with real titles from onet.occupation_data.
         """
         repo = RiasecRepository(db)
         canonical_code = canonical_riasec(payload.riasec_code)
         profile = repo.get_profile(canonical_code)
         if profile:
-            top_jobs = repo.top_matched_jobs(profile, limit=15)
-            occupation_pool = [j.occ_code for j in top_jobs]
+            top_jobs_data = repo.top_matched_jobs(profile, limit=15)
+            occupation_pool = [j["occ_code"] for j in top_jobs_data]
             top10_jobs = [
-                {"onet_code": j.occ_code, "title": j.title} for j in top_jobs[:10]
+                {"onet_code": j["occ_code"], "title": j["title"]} 
+                for j in top_jobs_data[:10]
             ]
         else:
             occupation_pool = []

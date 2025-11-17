@@ -3,7 +3,7 @@ from typing import List, TYPE_CHECKING
 from sqlalchemy import String, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base
+from ..base import Base
 
 if TYPE_CHECKING:
     from .sector import Sector

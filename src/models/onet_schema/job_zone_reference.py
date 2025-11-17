@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import Integer, String, Text, Float
 from sqlalchemy.orm import Mapped, mapped_column
 
-from .base import OnetBase
+from ..base import OnetBase
 
 if TYPE_CHECKING:
     pass

@@ -6,7 +6,7 @@ stores app-facing anchors/task statement.
 from sqlalchemy import String, ForeignKey, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base
+from ..base import Base
 
 
 class HSSkill(Base):

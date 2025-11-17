@@ -4,12 +4,12 @@ from typing import List, Optional, TYPE_CHECKING
 from sqlalchemy import String, Float, Text, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import OnetBase
+from ..base import OnetBase
 
 if TYPE_CHECKING:
-    from .onet_occupation import OnetOccupation
+    from . import onet_occupation
     from .content_model_reference import ContentModelReference
-    from .occupation import Occupation
+    from public_schema.occupation import Occupation
     from .scale import ScaleReference
 
 # In models/skill.py (REVISED)
@@ -34,7 +34,7 @@ class Skill(OnetBase):
     data_value: Mapped[float] = mapped_column(Float, nullable=False) # 
     
     # --- Relationships ---
-    occupation: Mapped["OnetOccupation"] = relationship("OnetOccupation", back_populates="skills")
+    onet_occupation: Mapped["onet_occupation.OnetOccupation"] = relationship("onet_occupation.OnetOccupation", back_populates="skills", post_update=True)
     element: Mapped["ContentModelReference"] = relationship("ContentModelReference", back_populates="skills")
     scale: Mapped["ScaleReference"] = relationship("ScaleReference")
     

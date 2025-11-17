@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from db.session import get_db
-from api.v1.schemas.assessment import (
+from src.db.session import get_db
+from src.api.v1.schemas.assessment import (
     RiasecCodeRequest,
     RiasecResult,
     SkillRatingsSubmission,
@@ -10,7 +10,7 @@ from api.v1.schemas.assessment import (
     InterestQuizResponse,
     SkillTriageResponse,
 )
-from services.assessment_service import AssessmentService
+from src.services.assessment_service import AssessmentService
 
 router = APIRouter(prefix="/assessment", tags=["assessment"])
 

@@ -4,7 +4,7 @@ from typing import List, Dict, TYPE_CHECKING
 from sqlalchemy import String, Float, Integer, Text, JSON, ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import OnetBase
+from ..base import OnetBase
 
 if TYPE_CHECKING:
     from .scale import ScaleReference

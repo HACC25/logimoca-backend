@@ -4,7 +4,7 @@ from typing import List, Optional, TYPE_CHECKING
 from sqlalchemy import String, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base, TimestampMixin
+from ..base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from .program import Program

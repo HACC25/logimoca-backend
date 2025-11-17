@@ -1,14 +1,36 @@
 import os
-from dotenv import load_dotenv
+import sys
+import pathlib
+from dotenv import load_dotenv, dotenv_values
 from logging.config import fileConfig
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-from api.models.base import Base
+from sqlalchemy import engine_from_config, pool
+
+# Add src to path so we can import models
+_project_root = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(_project_root))
+
+# Import Base from models package - this will import all models via __init__.py
+from src.models import Base
+from src.models.public_schema.sector import Sector
+from src.models.public_schema.pathway import Pathway
+from src.models.public_schema.institution import Institution
+from src.models.public_schema.interest_code import InterestCode
+from src.models.public_schema.hs_skill import HSSkill
+from src.models.public_schema.occupation import Occupation
+from src.models.public_schema.program import Program
+from src.models.public_schema.associations import program_occupation_association
+
 target_metadata = Base.metadata
 
 from alembic import context
 
-load_dotenv()
+# Load .env from project root (backend folder)
+_env_file = _project_root / ".env"
+load_dotenv(dotenv_path=_env_file)
+if _env_file.exists():
+    _cached_env = dotenv_values(_env_file)
+else:
+    raise RuntimeError("Could not load .env file for Alembic migrations.")
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -54,7 +76,10 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url") or os.getenv("DATABASE_URL") or os.getenv("TEST_DATABASE_URL")
+    env_url = os.getenv("DATABASE_URL") or os.getenv("TEST_DATABASE_URL")
+    if not env_url and _env_file.exists():
+        env_url = _cached_env.get("DATABASE_URL") or _cached_env.get("TEST_DATABASE_URL")
+    url = env_url or config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -73,14 +98,21 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    # Prefer alembic.ini url, else env var
+    # Prefer DATABASE_URL from environment/dotenv over alembic.ini placeholder
     section = config.get_section(config.config_ini_section, {})
-    url = section.get("sqlalchemy.url") or os.getenv("DATABASE_URL") or os.getenv("TEST_DATABASE_URL")
+    env_url = os.getenv("DATABASE_URL") or os.getenv("TEST_DATABASE_URL")
+    if not env_url and _env_file.exists():
+        env_url = _cached_env.get("DATABASE_URL") or _cached_env.get("TEST_DATABASE_URL")
+    url = env_url or section.get("sqlalchemy.url")
+    
+    # Debug: print what URL we're using
+    print(f"[Alembic] Using DATABASE_URL: {url}")
+    
     if url:
         section["sqlalchemy.url"] = url
         
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        section,  # Use the modified section, not a fresh get_section call
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

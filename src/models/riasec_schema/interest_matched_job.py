@@ -1,7 +1,7 @@
 from sqlalchemy import String, ForeignKey, BigInteger, Numeric
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from .base import Base
-from types import TYPE_CHECKING
+from ..base import Base
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .riasec_profile import RiasecProfile

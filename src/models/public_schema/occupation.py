@@ -5,11 +5,11 @@ from sqlalchemy import String, Float, Integer, Text, JSON, ForeignKey, Index
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import Base, TimestampMixin
+from ..base import Base, TimestampMixin
 
 if TYPE_CHECKING:
-    from .skill import Skill
-    from .onet_occupation import OnetOccupation
+    from ..onet_schema.skill import Skill
+    from ..onet_schema.onet_occupation import OnetOccupation
     from .program import Program
 
 class Occupation(TimestampMixin, Base):
@@ -71,18 +71,19 @@ class Occupation(TimestampMixin, Base):
         secondary="program_occupation_association",
         back_populates="occupations"
     )
+    
+    # One-to-One: Link back to O*NET occupation_data for detailed career information.
+    # Using string reference to avoid import cycle; SQLAlchemy resolves at mapper config time.
+    onet_occupation: Mapped["OnetOccupation"] = relationship(
+        "OnetOccupation",
+        back_populates="app_data",
+        uselist=False,
+        foreign_keys=[onet_code],
+        post_update=True
+    )
+    
     # Skills relationship: Skill table already has onetsoc_code FK
     # Access via onet_occupation.skills or query Skill directly
-    
-    def _onet_occupation():  # late import to avoid circular during annotation processing
-        from .onet_occupation import OnetOccupation
-        return OnetOccupation
-
-    onet_occupation: Mapped["OnetOccupation"] = relationship(
-        _onet_occupation,
-        back_populates="app_data",
-        uselist=False  # one-to-one
-    )
 
     # Indexes
     __table_args__ = (

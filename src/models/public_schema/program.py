@@ -1,4 +1,9 @@
-"""Program model representing UH training programs."""
+"""Program model representing UH training programs.
+
+Mapper fix: ensure association table `program_occupation_association` is loaded before
+relationship configuration by importing it explicitly. This avoids InvalidRequestError
+when only Program is imported (e.g., ingestion scripts) without importing Occupation.
+"""
 
 from datetime import datetime
 from typing import List, Dict, TYPE_CHECKING, Optional
@@ -7,7 +12,8 @@ from sqlalchemy import String, Float, Integer, Text, JSON, ForeignKey, Index, ev
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 from sqlalchemy.ext.declarative import declared_attr
 
-from .base import Base, TimestampMixin
+from ..base import Base, TimestampMixin
+from .associations import program_occupation_association  # explicit import ensures table exists
 
 if TYPE_CHECKING:
     from .institution import Institution
@@ -19,7 +25,7 @@ class Program(TimestampMixin, Base):
     __tablename__ = "programs"
     
     # Primary Key
-    id: Mapped[str] = mapped_column(String(50), primary_key=True)
+    id: Mapped[str] = mapped_column(String(100), primary_key=True)
     
     # Foreign Keys with cascade delete
     pathway_id: Mapped[str] = mapped_column(ForeignKey("pathways.id"), index=True)
@@ -53,12 +59,21 @@ class Program(TimestampMixin, Base):
     # JSON fields
     prerequisites: Mapped[List[str]] = mapped_column(JSON, default=list)
     delivery_modes: Mapped[List[str]] = mapped_column(JSON, default=list)
+    program_links: Mapped[Optional[List[str]]] = mapped_column(
+        JSON, 
+        nullable=True,
+        default=list,
+        comment="Additional URLs for program info, application, etc."
+    )
     
     # Relationships
     pathway: Mapped["Pathway"] = relationship(back_populates="programs")
     institution: Mapped["Institution"] = relationship(back_populates="programs")
+    # Many-to-Many: Programs related to Occupations via association table.
+    # Using actual Table object ensures mapper can find it even if Occupation not imported yet.
     occupations: Mapped[List["Occupation"]] = relationship(
-        secondary="program_occupation_association",
+        "Occupation",
+        secondary=program_occupation_association,
         back_populates="programs"
     )
 

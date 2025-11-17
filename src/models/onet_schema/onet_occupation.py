@@ -6,10 +6,10 @@ from typing import List, Dict, TYPE_CHECKING
 from sqlalchemy import String, Float, Integer, Text, JSON, ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .base import OnetBase
+from ..base import OnetBase
 
 if TYPE_CHECKING:
-    from .occupation import Occupation
+    from ..public_schema.occupation import Occupation
     from .skill import Skill
     from .interest import Interest
 
@@ -26,30 +26,23 @@ class OnetOccupation(OnetBase):
     title: Mapped[str] = mapped_column(String(200), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False)
 
-    # --- 1:1 FK (Foreign Key)for Occupation ---
-    # Use a callable import to resolve cross-registry relationship without circular imports
-    def _app_occupation():  # type: ignore[no-redef]
-        from .occupation import Occupation
-        return Occupation
-
-    # Explicit primaryjoin: Occupation.onet_code (public) references this PK via FK.
-    from sqlalchemy.orm import foreign
+    # --- Relationships ---
+    
+    # One-to-One: Link to public.occupation (Pathfinder app extensions).
+    # String reference avoids circular import; foreign() explicitly marks the remote side.
     app_data: Mapped["Occupation"] = relationship(
-        _app_occupation,
+        "Occupation",
         back_populates="onet_occupation",
-        uselist=False,
-        primaryjoin="OnetOccupation.onet_code == foreign(Occupation.onet_code)"
+        uselist=False
     )
 
-    # O*NET Relationships
+    # O*NET Relationships - now using simple string references since models imported in package
     skills: Mapped[List["Skill"]] = relationship(
         "Skill",
-        foreign_keys="[Skill.onetsoc_code]",
         back_populates="onet_occupation"
     )
     interests: Mapped[List["Interest"]] = relationship(
         "Interest",
-        foreign_keys="[Interest.onetsoc_code]",
         back_populates="onet_occupation"
     )
     

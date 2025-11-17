@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.routes import api_router  # Import the aggregated router
+from src.api.routes import api_router  # Import the aggregated router
 
 # Initialize the FastAPI app instance here
 app = FastAPI(title="UH Pathfinder API")

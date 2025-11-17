@@ -5,7 +5,7 @@ from typing import Dict, TYPE_CHECKING, Set
 from sqlalchemy import String, Text
 from sqlalchemy.orm import Mapped, mapped_column, validates
 
-from .base import Base, TimestampMixin
+from ..base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     pass

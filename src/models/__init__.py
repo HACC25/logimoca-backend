@@ -3,53 +3,61 @@
 # Base classes
 from .base import Base, TimestampMixin, OnetBase
 
-# O*NET schema models
-from .onet_occupation import OnetOccupation
-from .content_model_reference import ContentModelReference
-from .job_zone_reference import JobZoneReference
-from .scale import ScaleReference
-from .interest import Interest
+# TEMP: Only importing models actually needed for RIASEC endpoint
+# to avoid relationship configuration errors
+# Full model imports can be restored after fixing relationships
 
-# Public schema models (app-specific)
-from .sector import Sector
-from .institution import Institution
-from .program import Program
-from .occupation import Occupation
-from .skill import Skill
-from .interest_code import InterestCode
-from .hs_skill import HSSkill
+# RIASEC schema models (needed for assessment endpoint)
+from .riasec_schema.riasec_profile import RiasecProfile
+from .riasec_schema.interest_matched_job import InterestMatchedJob
+try:
+    # InterestFilteredSkill now stabilized; include for access when needed
+    from .riasec_schema.interest_filtered_skill import InterestFilteredSkill
+except ImportError:
+    InterestFilteredSkill = None  # Graceful fallback if file sync glitch removes it
 
-# Association tables
-from .associations import (
-    program_occupation_association
-)
+# Public schema models (needed for ingestion and pathways)
+from .public_schema.sector import Sector
+from .public_schema.institution import Institution
+from .public_schema.pathway import Pathway
+from .public_schema.program import Program
+from .public_schema.occupation import Occupation
+from .public_schema.associations import program_occupation_association
 
-# Client (Pydantic) models
-from .interest_assessment import InterestAssessment
-from .skills_assessment import SkillsAssessment
+# O*NET schema models (for cross-schema relationships and skills/interests data)
+from .onet_schema import OnetOccupation, Skill, Interest
+
+# Client (Pydantic) models - if these exist
+try:
+    from .public_schema.interest_assessment import InterestAssessment
+except ImportError:
+    InterestAssessment = None
+try:
+    from .public_schema.skills_assessment import SkillsAssessment
+except ImportError:
+    SkillsAssessment = None
 
 __all__ = [
     # Base
     "Base",
     "TimestampMixin",
     "OnetBase",
-    # O*NET models
-    "OnetOccupation",
-    "ContentModelReference",
-    "JobZoneReference",
-    "ScaleReference",
-    "Interest",
-    # App models
+    # RIASEC core models
+    "RiasecProfile",
+    "InterestMatchedJob",
+    "InterestFilteredSkill",
+    # Public schema models
     "Sector",
     "Institution",
+    "Pathway",
     "Program",
     "Occupation",
-    "Skill",
-    "InterestCode",
-    "HSSkill",
-    # Associations
     "program_occupation_association",
-    # Client models
+    # O*NET models
+    "OnetOccupation",
+    "Skill",
+    "Interest",
+    # Client models (if loaded)
     "InterestAssessment",
     "SkillsAssessment"
 ]

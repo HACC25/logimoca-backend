@@ -10,7 +10,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker, Session
 
-from core.config import settings
+from src.core.config import settings
 
 
 _engine: Optional[Engine] = None

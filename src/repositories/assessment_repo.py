@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 import json
 # from fastapi import Depends
 # from core.database import get_db
-from core.config import ONET_USERNAME, ONET_PASSWORD
+from src.core.config import ONET_USERNAME, ONET_PASSWORD
 
 class AssessmentRepository:
     # , db: Session = Depends(get_db) (removing temporarily to test the API call independently)

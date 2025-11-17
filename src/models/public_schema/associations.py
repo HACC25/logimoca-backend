@@ -3,7 +3,7 @@
 from datetime import datetime
 from sqlalchemy import Table, Column, String, Float, DateTime, ForeignKey
 
-from .base import Base
+from ..base import Base
 
 # NOTE: The O*NET 'skills' table in the Skill model already serves as the 
 # occupation-skill association table (composite PK of onetsoc_code, element_id, scale_id).
