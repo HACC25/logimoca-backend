@@ -12,6 +12,8 @@ class RiasecCodeRequest(BaseModel):
 class OccupationLite(BaseModel):
     onet_code: str
     title: str
+    median_salary: Optional[float] = None
+    growth_outlook: Optional[str] = None
 
 
 class SkillDefinition(BaseModel):

@@ -77,7 +77,12 @@ class AssessmentService:
             top_jobs_data = repo.top_matched_jobs(profile, limit=limit)
             occupation_pool = [j["occ_code"] for j in top_jobs_data]
             top10_jobs = [
-                {"onet_code": j["occ_code"], "title": j["title"]}
+                {
+                    "onet_code": j["occ_code"], 
+                    "title": j["title"],
+                    "median_salary": j.get("median_salary"),
+                    "growth_outlook": j.get("growth_outlook")
+                }
                 for j in top_jobs_data[:limit]
             ]
         else:
