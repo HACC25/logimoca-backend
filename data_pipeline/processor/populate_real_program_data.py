@@ -8,10 +8,10 @@ Populate real program data (degree type, duration, credits, cost) based on:
 import sys
 sys.path.insert(0, 'src')
 
-from db.session import get_session_factory
-from models.public_schema.program import Program
-from models.public_schema.pathway import Pathway
-from models.public_schema.institution import Institution
+from src.db.session import get_session_factory
+from src.models.public_schema.program import Program
+from src.models.public_schema.pathway import Pathway
+from src.models.public_schema.institution import Institution
 import re
 
 # Known degree types and their typical characteristics

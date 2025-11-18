@@ -10,9 +10,9 @@ This script will:
 import sys
 sys.path.insert(0, 'src')
 
-from db.session import get_session_factory
-from models.public_schema.program import Program
-from models.public_schema.vector_chunk import VectorChunk
+from src.db.session import get_session_factory
+from src.models.public_schema.program import Program
+from src.models.public_schema.vector_chunk import VectorChunk
 from sqlalchemy import func, and_, or_
 from sentence_transformers import SentenceTransformer
 import numpy as np
